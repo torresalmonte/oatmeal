@@ -25,7 +25,8 @@ export default class App extends React.Component {
 
           newTalks.push({
             topic: doc.data().Topic,
-            id: doc.id
+            id: doc.id,
+            isAttending: Object.keys(doc.data().attendees).includes(firebase.auth().currentUser.uid)
           });
         });
 
@@ -42,14 +43,23 @@ export default class App extends React.Component {
     this.unregisterFirestoreObserver();
   }
 
-  registerForTalk(talkId) {
-    console.log(talkId);
-
-    firebase
+  registerUnregisterForTalk(talk) {
+    if (!talk.isAttending){ 
+      firebase
       .firestore()
       .collection('talks')
-      .doc(talkId)
-      .set({ attendees: [firebase.auth().currentUser.uid] }, { merge: true });
+      .doc(talk.id)
+      .set({ attendees: {[firebase.auth().currentUser.uid]:true} }, { merge: true });
+      console.log("Subscribed to talk:" + talk.id);
+    } else {
+      firebase
+      .firestore()
+      .collection('talks')
+      .doc(talk.id)
+      .set({ attendees:{[firebase.auth().currentUser.uid]:firebase.firestore.FieldValue.delete()}},{merge: true});
+      console.log("Unsubscribed from talk:" + talk.id);
+    }
+    
   }
 
   render() {
@@ -61,13 +71,14 @@ export default class App extends React.Component {
             return (
               <li key={talk.id}>
                 {talk.topic}{' '}
-                <button onClick={() => this.registerForTalk(talk.id)}>
-                  Hello
+                <button onClick={(e) => this.registerUnregisterForTalk(talk)}>
+                  {talk.isAttending ? 'Unsubscribe' : 'Subscribe'}
                 </button>
               </li>
             );
           })}
         </ul>
+       
       </React.Fragment>
     );
   }
