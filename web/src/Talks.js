@@ -13,7 +13,7 @@ export default class App extends React.Component {
 
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
-    this.unregisterAuthObserver = firebase
+    this.unregisterFirestoreObserver = firebase
       .firestore()
       .collection('talks')
       .onSnapshot(querySnapshot => {
@@ -22,7 +22,11 @@ export default class App extends React.Component {
 
         querySnapshot.forEach(function(doc) {
           console.log(doc.data());
-          newTalks.push(doc.data().Topic);
+
+          newTalks.push({
+            topic: doc.data().Topic,
+            id: doc.id
+          });
         });
 
         console.log(newTalks);
@@ -35,7 +39,17 @@ export default class App extends React.Component {
 
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
-    this.unregisterAuthObserver();
+    this.unregisterFirestoreObserver();
+  }
+
+  registerForTalk(talkId) {
+    console.log(talkId);
+
+    firebase
+      .firestore()
+      .collection('talks')
+      .doc(talkId)
+      .set({ attendees: [firebase.auth().currentUser.uid] }, { merge: true });
   }
 
   render() {
@@ -43,7 +57,16 @@ export default class App extends React.Component {
       <React.Fragment>
         <h2>Available Talks</h2>
         <ul>
-          {this.state.talks.map(talkName => <li key={talkName}>{talkName}</li>)}
+          {this.state.talks.map(talk => {
+            return (
+              <li key={talk.id}>
+                {talk.topic}{' '}
+                <button onClick={() => this.registerForTalk(talk.id)}>
+                  Hello
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </React.Fragment>
     );
