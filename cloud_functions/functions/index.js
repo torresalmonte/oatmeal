@@ -24,7 +24,7 @@ const generateQrCode = functions.firestore
 
     return new Promise((resolve, reject) => {
       http
-        .get(qrCodeURL, function(response) {
+        .get(qrCodeURL, response => {
           response.pipe(writeStream);
         })
         .on('error', err => reject(err))
