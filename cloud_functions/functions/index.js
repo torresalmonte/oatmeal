@@ -33,8 +33,8 @@ var frstrTalkCreateTrigger = functions.firestore
     });
 */
 
-var version = 11;
-var comment = "fixed: change.after.data -> change.after.data()";
+var version = 14;
+var comment = "in progress: fix search for overlapped talks";
 
 var frstrTalkUpdateTrigger = functions.firestore
     .document("talks/{talkId}")
@@ -64,42 +64,79 @@ var frstrTalkUpdateTrigger = functions.firestore
 
             var talksRef = admin.firestore().collection("talks");
 
-            var talkStart = talk.start.toDate();
+            //var talkStart = talk.start.toDate();
 
-            console.log(`talk start: ${talkStart}`);
+            console.log(`talk start: ${talk.start}`);
 
-            var dayStart = new Date(talkStart);
+            var dayStart = new Date(talk.start);
             dayStart.setHours(0, 0, 0, 0);
 
             var dayEnd = new Date(dayStart);
             dayEnd.setHours(23, 59, 59, 999);
 
-            var fsDayEnd   = admin.firestore().Timestamp.fromDate(dayEnd);
+            //var fsDayEnd   = admin.firestore().Timestamp.fromDate(dayEnd);
+
+            // with those, check the end, based on the duration
+            //var fsTalkEnd = admin.firestore().Timestamp.fromDate(new Date(talkStart.getTime() + talk.duration * HOUR_MS));
+            var talkEnd = new Date(talk.start.getTime() + talk.duration * HOUR_MS);
+
+            console.log(`talkEnd: ${talkEnd}`);
 
             // get the talks that are done in the same day and their start time is 
             // get the talks that are on the same day 
-            var sameDayTalks = talksRef
+            return talksRef
                 .where("end", ">=", talk.start)
-                .where("end", "<=", fsDayEnd);
+                .where("end", "<=", dayEnd)
+                .get()
+                .then(snapshot => {
+                    // filter with the start property by hand
+                    if (snapshot.empty) {
+                        // OK
+                        var talkRef = admin.firestore().collection("talks").doc(talkId);
+                        return talkRef.set({
+                            end: talkEnd
+                        }, {merge: true});
 
-            // with those, check the end, based on the duration
-            var fsTalkEnd = admin.firestore().Timestamp.fromDate(new Date(talkStart.getTime() + talk.duration * HOUR_MS));
+                    } else {
+                        // check each entry start entry:
+                        // there is overlap if (start <= talk.start AND start >= talkEnd)
+                        console.log(snapshot.docs);
 
+                        for (var doc of snapshot.docs) {
+                            // TODO: check if start or end overlap
+
+                            //if (overlap) {
+                            //    throw new Error(`this values overlap with other talk: ${talk.start}`);
+                            //}
+
+                        }
+
+                        return false;
+
+                    }
+                })
+                .catch(err => {
+                    console.log(`there is a overlap: `, err);
+                });
+
+            /*
             var overlapTalks = sameDayTalks
                 .where("start", "<=", talk.start)
-                .where("start", ">=", fsTalkEnd);
+                .where("start", ">=", talkEnd);
+            */
 
             // finally, the values are ok if the last query returns an empty set
             // TODO: check length of the result set
+            /*
             var result = overlapTalks.get()
                 .then(snapshot => {
                     if (snapshot.empty) {
-                        console.log(`empty set, talkEnd: ${fsTalkEnd}`);
+                        console.log(`empty set, talkEnd: ${talkEnd}`);
                         // OK
                         // update talk.end value and save changes
                         var talkRef = admin.firestore().collection("talks").doc(talkId);
                         return talkRef.set({
-                            end: fsTalkEnd
+                            end: talkEnd
                         }, {merge: true});
                     } else {
                         // bad... throw an error?
@@ -112,6 +149,7 @@ var frstrTalkUpdateTrigger = functions.firestore
 
             // final result of the execution
             return result;
+            */
 
         } // if
 
