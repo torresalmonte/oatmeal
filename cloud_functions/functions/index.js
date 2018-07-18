@@ -1,12 +1,5 @@
 const functions = require('firebase-functions');
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
+const http = require('http');
 const admin = require('firebase-admin');
 
 // hour in ms
@@ -14,24 +7,37 @@ const HOUR_MS = 1000 * 60 * 60;
 
 admin.initializeApp();
 
-// firestore events
-/*
-var frstrTalkCreateTrigger = functions.firestore
-    .document("talks/{talkId}")
-    .onCreate((snap, context) => {
-        // document representation
-        var newTalk = snap.data();
+// initialize gcs SDK for Cloud Storage upload
+const gcs = require('@google-cloud/storage')();
 
-        var speakers = newTalk.speakers;
-        // TODO: validate speakers
-
-        var attendees = newTalk.attendees;
-        // TODO: validate no speaker is attendee and viceversa
-
-
-
+const generateQrCode = functions.firestore
+  .document('talks/{talkId}')
+  .onCreate((snapShot, context) => {
+    const talkId = context.params.talkId;
+    const qrCodeURL = `http://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${talkId}`;
+    console.log(admin.storage().bucket());
+    const bucket = gcs.bucket(admin.storage().bucket().name);
+    const fileName = `qr-codes/${talkId}`;
+    const writeStream = bucket.file(`qr-codes/${talkId}`).createWriteStream({
+      metadata: { contentType: 'image/png' }
     });
-*/
+
+    return new Promise((resolve, reject) => {
+      http
+        .get(qrCodeURL, function(response) {
+          response.pipe(writeStream);
+        })
+        .on('error', err => reject(err))
+        .on('finish', () => resolve(true));
+    })
+      .then(() => {
+        return snapShot.ref.set({ qrDownloadPath: fileName }, { merge: true });
+      })
+      .catch(err => {
+        console.log('error: ' + err);
+      });
+  });
+
 
 var version = 14;
 var comment = "in progress: fix search for overlapped talks";
@@ -162,3 +168,4 @@ var frstrTalkUpdateTrigger = functions.firestore
 
 
 exports.talkUpdateTrigger = frstrTalkUpdateTrigger;
+exports.generateQrCode = generateQrCode;
