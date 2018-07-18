@@ -1,6 +1,6 @@
 {
     "GUID": "8dad8940-8941-11e8-889a-734bc56b7ccf",
-    "lastModifTS": "2018-07-16T21:46:29.388Z",
+    "lastModifTS": "2018-07-18T22:23:10.390Z",
     "persistenceSchemaVersion": "2",
     "description": "",
     "comments": "",
@@ -152,20 +152,21 @@
                     "dependencies": [],
                     "required": false,
                     "id": "",
-                    "name": "canGiveTalk",
-                    "type": "boolean",
+                    "name": "role",
+                    "type": "string",
+                    "minLength": "",
+                    "maxLength": "",
+                    "pattern": "",
+                    "format": "",
                     "default": "",
-                    "enum": [],
                     "primaryKey": false,
                     "relationshipType": "",
                     "parentRelationship": "",
                     "childRelationships": [],
                     "foreignCollection": "",
                     "foreignField": [],
-                    "sample": "",
-                    "error": {
-                        "name": false
-                    }
+                    "enum": [],
+                    "sample": ""
                 }
             ],
             "definitions": {
@@ -661,7 +662,7 @@
         "a2d878c0-891e-11e8-889a-734bc56b7ccf": "lastName",
         "a67611e0-891e-11e8-889a-734bc56b7ccf": "phone",
         "ac614480-891e-11e8-889a-734bc56b7ccf": "email",
-        "b887eca0-891e-11e8-889a-734bc56b7ccf": "canGiveTalk",
+        "b887eca0-891e-11e8-889a-734bc56b7ccf": "role",
         "c0da5b40-891e-11e8-889a-734bc56b7ccf": "Room",
         "c7c1c830-891e-11e8-889a-734bc56b7ccf": "id",
         "ce47db40-891e-11e8-889a-734bc56b7ccf": "name",
@@ -685,8 +686,9 @@
     "creationTS": "2018-07-16T17:25:48.474Z",
     "isCreatedByPlugin": true,
     "pluginInformation": {
-        "pluginVersion": "0.1.3",
-        "pluginName": "Firestore",
+        "pluginVersion": "",
+        "pluginName": "",
+        "pluginLink": "",
         "pluginEngineVersion": "1.0.0"
     },
     "settings": {
@@ -721,11 +723,11 @@
                 "buckets": [],
                 "collapsedNodes": [],
                 "activeRelationship": "",
+                "selectedCollections": [],
                 "activeRelationshipFields": {
                     "childField": [],
                     "parentField": []
                 },
-                "selectedCollections": [],
                 "displayColorPicker": false
             },
             "collectionLevel": {},
