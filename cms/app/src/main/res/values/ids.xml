@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="phone_auth_fields" type="id" />
+    <item name="signed_in_buttons" type="id" />
+    <item name="status" type="id" />
+    <item name="detail" type="id" />
+    <item name="field_phone_number" type="id" />
+    <item name="field_verification_code" type="id" />
+    <item name="button_start_verification" type="id" />
+    <item name="button_verify_phone" type="id" />
+    <item name="button_resend" type="id" />
+    <item name="sign_out_button" type="id" />
+    <item name="field_email" type="id" />
+    <item name="field_password" type="id" />
+    <item name="button_sign_in" type="id" />
+    <item name="button_sign_up" type="id" />
+    <item name="content" type="id" />
+    <item name="user_profile_picture" type="id" />
+    <item name="user_email" type="id" />
+    <item name="user_display_name" type="id" />
+    <item name="user_phone_number" type="id" />
+    <item name="user_enabled_providers" type="id" />
+    <item name="user_is_new" type="id" />
+    <item name="list" type="id" />
+    <item name="talk_recycler_view" type="id" />
+    <item name="topicTalkView" type="id" />
+</resources>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "62071888839",
+    "firebase_url": "https://oatmeal-hack.firebaseio.com",
+    "project_id": "oatmeal-hack",
+    "storage_bucket": "oatmeal-hack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62071888839:android:1337542451929cf6",
+        "android_client_info": {
+          "package_name": "com.oatmeal.cms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62071888839-n8i8ul45m58l13k9nto8jltemfipqpq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXDp06WvxkzMcJed8EyVaxUZ0tgGLiXdc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
