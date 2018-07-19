@@ -2,6 +2,9 @@
 import React from 'react';
 import firebase from 'firebase';
 
+// material-ui
+import Button from '@material-ui/core/Button';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -72,9 +75,9 @@ export default class App extends React.Component {
             return (
               <li key={talk.id}>
                 {talk.topic}{' '}
-                <button onClick={(e) => this.registerUnregisterForTalk(talk)}>
+                <Button variant="outlined" color="primary" onClick={(e) => this.registerUnregisterForTalk(talk)}>
                   {talk.isAttending ? 'Unsubscribe' : 'Subscribe'}
-                </button>
+                </Button>
               </li>
             );
           })}

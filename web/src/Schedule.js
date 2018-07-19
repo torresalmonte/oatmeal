@@ -2,6 +2,19 @@
 import React from 'react';
 import firebase from 'firebase';
 
+// add material-ui
+//import ReactDom from 'react-dom';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
+// table header styles
+//const CustomTableCell = 
+
 /**
  * in this component we do the schedule assignment; as part
  * of this, we create "time spans" available according to the room and
@@ -40,8 +53,6 @@ export default class Schedule extends React.Component {
                     pendingTalks.push(doc.data());
                 }
 
-                console.log(pendingTalks);
-
                 this.setState({
                     talks: pendingTalks
                 });
@@ -79,12 +90,12 @@ export default class Schedule extends React.Component {
                         return (
                             <li key={talk.id}>
                                 {talk.topic}{' '}
-                                <button onClick={(e) => this.acceptTalk(talk.id)}>
+                                <Button variant="outlined" color="primary" onClick={(e) => this.acceptTalk(talk.id)}>
                                     Schedule talk
-                                </button>
-                                <button onClick={(e) => this.rejectTalk(talk.id)}>
+                                </Button>
+                                <Button variant="outlined" color="secondary" onClick={(e) => this.rejectTalk(talk.id)}>
                                     Reject talk
-                                </button>
+                                </Button>
                             </li>
                         );
                     })}

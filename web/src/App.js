@@ -5,7 +5,27 @@ import firebase from 'firebase';
 import Talks from './Talks';
 import Schedule from './Schedule';
 
-s
+// material-ui
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+//import Button from '@material-ui/core/Button';
+//import IconButton from '@material-ui/core/IconButton';
+//import MenuIcon from '@material-ui/icons/Menu';
+
+// material-ui classes
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  flex: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  }
+};
 
 // Configure Firebase.
 const config = {
@@ -84,7 +104,15 @@ export default class App extends React.Component {
     if (!this.state.isSignedIn) {
       return (
         <div>
-          <h1>My App</h1>
+          <div className={styles.root}>
+            <AppBar position="static">
+              <Toolbar>
+                <Typography variant="title" color="inherit" className={styles.flex}>
+                  Oatmeal
+                </Typography>
+              </Toolbar>
+            </AppBar>
+          </div>
           <p>Please sign-in:</p>
           <StyledFirebaseAuth
             uiConfig={this.uiConfig}
@@ -99,7 +127,15 @@ export default class App extends React.Component {
         case "speaker":
         return (
           <div>
-            <h1>Oatmeal</h1>
+            <div className={styles.root}>
+              <AppBar position="static">
+                <Toolbar>
+                  <Typography variant="title" color="inherit" className={styles.flex}>
+                    Oatmeal
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+            </div>
             <p>
               Welcome {firebase.auth().currentUser.displayName}! You are now
               signed-in!
@@ -111,7 +147,15 @@ export default class App extends React.Component {
         case "admin":
         return (
           <div>
-            <h1>Oatmeal Admin</h1>
+            <div className={styles.root}>
+              <AppBar position="static">
+                <Toolbar>
+                  <Typography variant="title" color="inherit" className={styles.flex}>
+                    Oatmeal Conference Management System (Admin)
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+            </div>
             <p>
               Welcome {this.state.person.firstName} {this.state.person.lastName}
             </p>
