@@ -3,6 +3,7 @@ import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
 import Talks from './Talks';
+import Schedule from './Schedule';
 
 // Configure Firebase.
 const config = {
@@ -40,7 +41,35 @@ export default class App extends React.Component {
   componentDidMount() {
     this.unregisterAuthObserver = firebase
       .auth()
-      .onAuthStateChanged(user => this.setState({ isSignedIn: !!user }));
+      .onAuthStateChanged(user => {
+        const isSignedIn = !!user;
+        if (isSignedIn) {
+          // get the person document
+          firebase
+            .firestore()
+            .collection("persons")
+            .doc(user.uid)
+            .get()
+            .then(person => {
+              this.setState({
+                isSignedIn: isSignedIn,
+                person: person.data()
+              });
+            })
+            .catch(err => {
+              console.log("ERROR", err);
+              this.setState({
+                isSignedIn: false,
+                err: err
+              });
+            });
+        } else {
+          this.setState({
+            isSignedIn: isSignedIn
+          });
+        }
+      });
+      //.onAuthStateChanged(user => this.setState({ isSignedIn: !!user }));
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.
@@ -49,6 +78,7 @@ export default class App extends React.Component {
   }
 
   render() {
+
     if (!this.state.isSignedIn) {
       return (
         <div>
@@ -60,16 +90,45 @@ export default class App extends React.Component {
           />
         </div>
       );
+    } else {
+      // from here on, the user is signed-on
+
+      switch (this.state.person.role) {
+        case "speaker":
+        return (
+          <div>
+            <h1>Oatmeal</h1>
+            <p>
+              Welcome {firebase.auth().currentUser.displayName}! You are now
+              signed-in!
+            </p>
+            <Talks />
+          </div>
+        );
+    
+        case "admin":
+        return (
+          <div>
+            <h1>Oatmeal Admin</h1>
+            <p>
+              Welcome {this.state.person.firstName} {this.state.person.lastName}
+            </p>
+            <Schedule />
+          </div>
+        );
+
+        default:
+        console.log("default", this.state.person);
+        return (
+          <div>
+            Default
+          </div>
+        );
+      
+      } // switch
     }
-    return (
-      <div>
-        <h1>Oatmeal</h1>
-        <p>
-          Welcome {firebase.auth().currentUser.displayName}! You are now
-          signed-in!
-        </p>
-        <Talks />
-      </div>
-    );
-  }
-}
+
+
+  } // render
+
+} // class
