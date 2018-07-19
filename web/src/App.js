@@ -5,6 +5,8 @@ import firebase from 'firebase';
 import Talks from './Talks';
 import Schedule from './Schedule';
 
+s
+
 // Configure Firebase.
 const config = {
   apiKey: 'AIzaSyAVJn0YvZ7rgPmp-KQzakvI3Wf54yCkQPU',
@@ -132,3 +134,4 @@ export default class App extends React.Component {
   } // render
 
 } // class
+
