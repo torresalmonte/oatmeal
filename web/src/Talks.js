@@ -20,23 +20,24 @@ export default class App extends React.Component {
         const newTalks = [];
         console.log('got snapshot!');
 
-        querySnapshot.forEach(function(doc) {
-          console.log(doc.data());
+        querySnapshot.forEach(doc => {
+          var talk = doc.data();
+          var isAttending = talk.attendees
+            ? Object.keys(talk.attendees).includes(firebase.auth().currentUser.uid)
+            : false;
 
           newTalks.push({
-            topic: doc.data().Topic,
+            topic: talk.topic,
             id: doc.id,
-            isAttending: Object.keys(doc.data().attendees).includes(firebase.auth().currentUser.uid)
+            isAttending: isAttending
           });
         });
-
-        console.log(newTalks);
 
         this.setState({
           talks: newTalks
         });
       });
-  }
+  } // componenDidMount
 
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
@@ -60,7 +61,7 @@ export default class App extends React.Component {
       console.log("Unsubscribed from talk:" + talk.id);
     }
     
-  }
+  } // registerUnregisterForTalk
 
   render() {
     return (
@@ -81,5 +82,6 @@ export default class App extends React.Component {
        
       </React.Fragment>
     );
-  }
-}
+  } // render
+  
+} // class
