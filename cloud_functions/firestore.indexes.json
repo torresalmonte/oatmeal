@@ -1,0 +1,11 @@
+{
+  "indexes": [
+    {
+      "collectionId": "talks",
+      "fields": [
+        {"fieldPath": "state", "mode": "ASCENDING"},
+        {"fieldPath": "topic", "mode": "ASCENDING"}
+      ]
+    }
+  ]
+}
