@@ -1,6 +1,6 @@
 {
     "GUID": "8dad8940-8941-11e8-889a-734bc56b7ccf",
-    "lastModifTS": "2018-07-20T14:49:30.040Z",
+    "lastModifTS": "2018-07-20T19:29:09.716Z",
     "persistenceSchemaVersion": "2",
     "description": "",
     "comments": "",
@@ -324,7 +324,7 @@
                     "dependencies": [],
                     "required": false,
                     "id": "",
-                    "name": "speakers",
+                    "name": "speaker",
                     "type": "string",
                     "minLength": "",
                     "maxLength": "",
@@ -338,7 +338,10 @@
                     "foreignCollection": "",
                     "foreignField": [],
                     "enum": [],
-                    "sample": ""
+                    "sample": "",
+                    "error": {
+                        "name": false
+                    }
                 },
                 {
                     "GUID": "b28f1ae0-891d-11e8-889a-734bc56b7ccf",
@@ -596,7 +599,7 @@
     "idToNameHashTable": {
         "4b7b2a60-891d-11e8-889a-734bc56b7ccf": "Talk",
         "718a0e10-891d-11e8-889a-734bc56b7ccf": "id",
-        "80214100-891d-11e8-889a-734bc56b7ccf": "speakers",
+        "80214100-891d-11e8-889a-734bc56b7ccf": "speaker",
         "b28f1ae0-891d-11e8-889a-734bc56b7ccf": "room_id",
         "c0cedf00-891d-11e8-889a-734bc56b7ccf": "attendees",
         "d90fac20-891d-11e8-889a-734bc56b7ccf": "person_id",

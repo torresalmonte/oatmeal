@@ -47,6 +47,14 @@ export default class App extends React.Component {
     this.unregisterFirestoreObserver();
   }
 
+  componentDidCatch (error, info) {
+    console.log("CATCH:", error);
+    console.log("CATCH:", info);
+    this.setState({
+      error: error
+    });
+  }
+
   registerUnregisterForTalk(talk) {
     if (!talk.isAttending){ 
       firebase
@@ -67,6 +75,16 @@ export default class App extends React.Component {
   } // registerUnregisterForTalk
 
   render() {
+    if (this.state.talks) {
+      return (
+        <React.Fragment>
+          <h3>Ocurrió un error:</h3>
+          <pre>{this.state.error}</pre>
+          <pre>{this.state.info}</pre>
+        </React.Fragment>
+      );
+    }
+
     return (
       <React.Fragment>
         <h2>Available Talks</h2>
