@@ -12,6 +12,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+// schedule form dialog components
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+
+// form components
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
 // table header styles
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -54,7 +65,13 @@ export default class Schedule extends React.Component {
             // pending talks
             talks: [],
             // list of rooms
-            rooms: []
+            rooms: [],
+            // dialog form state
+            dialogOpen: false,
+            // room selected
+            roomId: null,
+            day: 1,
+            time: null
         };
     }
 
@@ -62,6 +79,28 @@ export default class Schedule extends React.Component {
     componentDidMount () {
         // we need an admin user
         // TODO: check "admin" role
+
+        // get the room list
+        firebase
+            .firestore()
+            .collection("rooms")
+            //.orderBy("name")
+            .get()
+            .then(docs => {
+                var rooms = [];
+                docs.forEach(doc => {
+                    console.log("ID:", doc.id);
+                    var room = doc.data();
+                    room.roomId = doc.id;
+                    rooms.push(room);
+                });
+                this.setState({
+                    rooms: rooms
+                });
+            })
+            .catch(err => {
+                console.log("ERROR", err);
+            });
 
         // get pending talks
         this.unregisterFirestoreObserver = firebase
@@ -94,17 +133,56 @@ export default class Schedule extends React.Component {
      * 
      * @param {string} talkId 
      */
-    acceptTalk (talkId) {
+    acceptTalkHandler = (talkId) => {
         console.log(`accepted ${talkId}`);
+
+        this.setState({
+            dialogOpen: true
+        });
+
     } // acceptTalk
+
+    saveAcceptedHandler = () => {
+
+        // TODO: update talk with "accepted" state,
+        // room, day and time
+        // and close dialog
+        this.setState({
+            dialogOpen: false
+        });
+
+    } // saveAcceptedHandler
+
+    cancelAcceptedHandler = () => {
+        this.setState({
+            dialogOpen: false
+        });
+    }
 
     /**
      * 
      * @param {string} talkId 
      */
-    rejectTalk (talkId) {
+    rejectTalkHandler = (talkId) => {
+
+        // TODO: update talk state to "rejected"
+        firebase
+            .firestore()
+            .collection("talks")
+            .doc(talkId)
+            .update({
+                state: "rejected"
+            })
+            .then( () => {});
+
         console.log(`rejected ${talkId}`);
     } // rejectTalk
+
+    roomChangeHandler = (roomId) => {
+        this.setState({
+            roomId: roomId
+        });
+    }
 
     render () {
 
@@ -123,16 +201,38 @@ export default class Schedule extends React.Component {
                                 <TableRow key={talk.talkId}>
                                     <TableCell>{talk.topic}</TableCell>
                                     <TableCell>
-                                        <Button variant="outlined" color="primary" onClick={(e) => this.acceptTalk(talk.talkId)}>Schedule</Button>
+                                        <Button variant="outlined" color="primary" onClick={(e) => this.acceptTalkHandler(talk.talkId)}>Schedule</Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="outlined" color="secondary" onClick={(e) => this.rejectTalk(talk.talkId)}>Reject</Button>
+                                        <Button variant="outlined" color="secondary" onClick={(e) => this.rejectTalkHandler(talk.talkId)}>Reject</Button>
                                     </TableCell>
                                 </TableRow>
                             );
                         })}
                     </Table>
                 </Paper>
+                <Dialog open={this.state.dialogOpen} onClose={this.cancelAcceptedHandler}>
+                    <DialogTitle>Assign Room</DialogTitle>
+                    <DialogContent>
+                        <Select
+                            value={this.state.roomId}
+                            onChange={this.roomChangeHandler}
+                            name="roomId"
+                        >
+                            <MenuItem value=""><em>None</em></MenuItem>
+                        {this.state.rooms.map(room => {
+                            return (
+                                <MenuItem value={room.roomId}>{room.name}</MenuItem>
+                            );
+                        })}
+                        </Select>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="raised" color="primary" onClick={this.saveAcceptedHandler}>
+                            Guardar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
         );
 
