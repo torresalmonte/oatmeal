@@ -1,6 +1,6 @@
 {
     "GUID": "8dad8940-8941-11e8-889a-734bc56b7ccf",
-    "lastModifTS": "2018-07-18T22:23:10.390Z",
+    "lastModifTS": "2018-07-20T14:49:30.040Z",
     "persistenceSchemaVersion": "2",
     "description": "",
     "comments": "",
@@ -268,32 +268,6 @@
                     "foreignField": [],
                     "enum": [],
                     "sample": ""
-                },
-                {
-                    "GUID": "d9ad7d50-891e-11e8-889a-734bc56b7ccf",
-                    "description": "",
-                    "comments": "",
-                    "dependencies": [],
-                    "required": false,
-                    "id": "",
-                    "name": "location",
-                    "type": "string",
-                    "minLength": "",
-                    "maxLength": "",
-                    "pattern": "",
-                    "format": "",
-                    "default": "",
-                    "primaryKey": false,
-                    "relationshipType": "",
-                    "parentRelationship": "",
-                    "childRelationships": [],
-                    "foreignCollection": "",
-                    "foreignField": [],
-                    "enum": [],
-                    "sample": "",
-                    "error": {
-                        "name": false
-                    }
                 }
             ],
             "definitions": {
@@ -351,46 +325,20 @@
                     "required": false,
                     "id": "",
                     "name": "speakers",
-                    "type": "array",
-                    "properties": [
-                        {
-                            "GUID": "8033dea0-891d-11e8-889a-734bc56b7ccf",
-                            "description": "",
-                            "comments": "",
-                            "required": false,
-                            "id": "",
-                            "type": "string",
-                            "minLength": "",
-                            "maxLength": "",
-                            "pattern": "",
-                            "format": "",
-                            "default": "",
-                            "primaryKey": false,
-                            "relationshipType": "",
-                            "parentRelationship": "",
-                            "childRelationships": [],
-                            "foreignCollection": "74006fd0-891e-11e8-889a-734bc56b7ccf",
-                            "foreignField": [],
-                            "enum": [],
-                            "sample": "",
-                            "arrayItem": true,
-                            "arrayParentType": "array"
-                        }
-                    ],
+                    "type": "string",
+                    "minLength": "",
+                    "maxLength": "",
+                    "pattern": "",
+                    "format": "",
+                    "default": "",
                     "primaryKey": false,
                     "relationshipType": "",
                     "parentRelationship": "",
                     "childRelationships": [],
                     "foreignCollection": "",
                     "foreignField": [],
-                    "additionalItems": true,
-                    "minItems": "",
-                    "maxItems": "",
-                    "uniqueItems": false,
                     "enum": [],
-                    "error": {
-                        "name": false
-                    }
+                    "sample": ""
                 },
                 {
                     "GUID": "b28f1ae0-891d-11e8-889a-734bc56b7ccf",
@@ -667,7 +615,6 @@
         "c7c1c830-891e-11e8-889a-734bc56b7ccf": "id",
         "ce47db40-891e-11e8-889a-734bc56b7ccf": "name",
         "d2c37850-891e-11e8-889a-734bc56b7ccf": "capacity",
-        "d9ad7d50-891e-11e8-889a-734bc56b7ccf": "location",
         "08155a20-8931-11e8-889a-734bc56b7ccf": "firstName"
     },
     "definitions": {
