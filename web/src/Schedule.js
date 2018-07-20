@@ -13,7 +13,31 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 // table header styles
-//const CustomTableCell = 
+const CustomTableCell = withStyles(theme => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+        marginTop: theme.spacing.unit * 3,
+        overflowX: 'auto'
+    },
+    table: {
+        minWidth: 700
+    },
+    row: {
+        '&nth-of-type(odd)': {
+            backgroundColor: theme.pallete.background.default
+        }
+    }
+});
 
 /**
  * in this component we do the schedule assignment; as part
@@ -50,7 +74,9 @@ export default class Schedule extends React.Component {
                 const pendingTalks = [];
 
                 for (var doc of querySnapshot.docs) {
-                    pendingTalks.push(doc.data());
+                    var talk = doc.data();
+                    talk.talkId = doc.id;
+                    pendingTalks.push(talk);
                 }
 
                 this.setState({
@@ -76,7 +102,7 @@ export default class Schedule extends React.Component {
      * 
      * @param {string} talkId 
      */
-    rejecttalk (talkId) {
+    rejectTalk (talkId) {
         console.log(`rejected ${talkId}`);
     } // rejectTalk
 
@@ -85,21 +111,28 @@ export default class Schedule extends React.Component {
         return (
             <React.Fragment>
                 <h2>Pending Talks</h2>
-                <ul>
-                    {this.state.talks.map(talk => {
-                        return (
-                            <li key={talk.id}>
-                                {talk.topic}{' '}
-                                <Button variant="outlined" color="primary" onClick={(e) => this.acceptTalk(talk.id)}>
-                                    Schedule talk
-                                </Button>
-                                <Button variant="outlined" color="secondary" onClick={(e) => this.rejectTalk(talk.id)}>
-                                    Reject talk
-                                </Button>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <Paper className={styles.root}>
+                    <Table className={styles.table}>
+                        <TableHead>
+                            <CustomTableCell>Topic</CustomTableCell>
+                            <CustomTableCell>#</CustomTableCell>
+                            <CustomTableCell>#</CustomTableCell>
+                        </TableHead>
+                        {this.state.talks.map(talk => {
+                            return (
+                                <TableRow key={talk.talkId}>
+                                    <TableCell>{talk.topic}</TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" color="primary" onClick={(e) => this.acceptTalk(talk.talkId)}>Schedule</Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" color="secondary" onClick={(e) => this.rejectTalk(talk.talkId)}>Reject</Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </Table>
+                </Paper>
             </React.Fragment>
         );
 
