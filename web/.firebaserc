@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "oatmeal-hack"
+  },
+  "targets": {
+    "oatmeal-hack": {
+      "hosting": {
+        "main": [
+          "oatmeal-hack"
+        ],
+        "phone": [
+          "frbs-phone-auth-test"
+        ]
+      }
+    }
   }
 }
